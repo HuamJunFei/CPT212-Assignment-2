@@ -16,7 +16,7 @@ using namespace std;
 //--------------------------------------------------
 void buildBadCharacterTable(const string& pattern, vector<int>& badChar)
 {
-    int m = pattern.length();
+    int m = static_cast<int>(pattern.length());
 
     badChar.assign(256, -1);
 
@@ -29,10 +29,7 @@ void buildBadCharacterTable(const string& pattern, vector<int>& badChar)
 //--------------------------------------------------
 // Helper Function for Good Suffix Rule
 //--------------------------------------------------
-void preprocessStrongSuffix(vector<int>& shift,
-                            vector<int>& borderPos,
-                            const string& pattern,
-                            int m)
+void preprocessStrongSuffix(vector<int>& shift,vector<int>& borderPos,const string& pattern,int m)
 {
     int i = m;
     int j = m + 1;
@@ -62,9 +59,7 @@ void preprocessStrongSuffix(vector<int>& shift,
 //--------------------------------------------------
 // Preprocess Case 2 of Good Suffix Rule
 //--------------------------------------------------
-void preprocessCase2(vector<int>& shift,
-                     vector<int>& borderPos,
-                     int m)
+void preprocessCase2(vector<int>& shift,vector<int>& borderPos,int m)
 {
     int j = borderPos[0];
 
@@ -85,8 +80,7 @@ void preprocessCase2(vector<int>& shift,
 //--------------------------------------------------
 // Build Good Suffix Table
 //--------------------------------------------------
-void buildGoodSuffixTable(const string& pattern,
-                          vector<int>& shift)
+void buildGoodSuffixTable(const string& pattern,vector<int>& shift)
 {
     int m = pattern.length();
 
@@ -94,23 +88,14 @@ void buildGoodSuffixTable(const string& pattern,
 
     shift.assign(m + 1, 0);
 
-    preprocessStrongSuffix(
-        shift,
-        borderPos,
-        pattern,
-        m);
-
-    preprocessCase2(
-        shift,
-        borderPos,
-        m);
+    preprocessStrongSuffix(shift,borderPos,pattern,m);
+    preprocessCase2(shift,borderPos,m);
 }
 
 //--------------------------------------------------
 // Boyer-Moore Search
 //--------------------------------------------------
-void boyerMooreSearch(const string& text,
-                      const string& pattern)
+void boyerMooreSearch(const string& text,const string& pattern)
 {
     int n = text.length();
     int m = pattern.length();
@@ -147,15 +132,9 @@ void boyerMooreSearch(const string& text,
         }
         else
         {
-            int badCharShift =
-                j - badChar[(unsigned char)text[shift + j]];
-
-            int goodSuffixShift =
-                goodSuffix[j + 1];
-
-            shift += max(1,
-                         max(badCharShift,
-                             goodSuffixShift));
+            int badCharShift = j - badChar[(unsigned char)text[shift + j]];
+            int goodSuffixShift = goodSuffix[j + 1];
+            shift += max(1,max(badCharShift,goodSuffixShift));
         }
     }
 
@@ -170,11 +149,8 @@ void boyerMooreSearch(const string& text,
 //--------------------------------------------------
 int main()
 {
-    string text =
-        "AAAABABAAAAA";
-
-    string pattern =
-        "ABAB";
+    string text ="AAAAAAAAA";
+    string pattern ="AAAA";
 
     cout << "Text: " << text << endl;
     cout << "Pattern: " << pattern << endl;
